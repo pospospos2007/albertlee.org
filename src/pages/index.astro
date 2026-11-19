@@ -20,6 +20,9 @@ const posts = (await getPublishedPosts()).slice(0, 5);
       {SOCIALS.github && (
         <a href={SOCIALS.github} target="_blank" rel="noopener noreferrer">GitHub &rarr;</a>
       )}
+      {SOCIALS.email && (
+        <a href={`mailto:${SOCIALS.email}`}>Email &rarr;</a>
+      )}
       <a href="/rss.xml">RSS Feed &rarr;</a>
       <a href="/about">About &rarr;</a>
     </div>

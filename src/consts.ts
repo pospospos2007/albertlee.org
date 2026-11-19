@@ -10,7 +10,7 @@ export const SITE = {
 
 export const SOCIALS = {
   github: 'https://github.com/pospospos2007',
-  email: '', // Optional: e.g. 'hello@albertlee.org' once Cloudflare Email Routing is enabled
+  email: 'hello@albertlee.org',
   x: '', // Optional: e.g. 'https://x.com/yourhandle'
   linkedin: '', // Optional: e.g. 'https://linkedin.com/in/yourhandle'
 } as const;
