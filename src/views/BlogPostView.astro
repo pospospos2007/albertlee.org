@@ -58,6 +58,15 @@ const alternateUrl = translated
         </time>
         <span>&middot;</span>
         <span>{readingTime}</span>
+        <span id="view-counter-wrap" hidden>
+          <span>&middot;</span>{' '}
+          <span
+            id="view-counter"
+            data-slug={slug}
+            data-singular={t.viewSingular}
+            data-plural={t.viewPlural}
+          ></span>
+        </span>
         {post.data.updatedDate && (
           <>
             <span>&middot;</span>
@@ -116,3 +125,38 @@ const alternateUrl = translated
     <NewsletterBox lang={lang} />
   </div>
 </BaseLayout>
+
+<script is:inline>
+  (() => {
+    const el = document.getElementById('view-counter');
+    const wrap = document.getElementById('view-counter-wrap');
+    if (!el || !wrap) return;
+
+    const slug = el.getAttribute('data-slug');
+    const singular = el.getAttribute('data-singular') || 'view';
+    const plural = el.getAttribute('data-plural') || 'views';
+    if (!slug) return;
+
+    const storageKey = `viewed:${slug}`;
+    let alreadyViewed = false;
+    try {
+      alreadyViewed = sessionStorage.getItem(storageKey) === '1';
+    } catch {}
+
+    const method = alreadyViewed ? 'GET' : 'POST';
+    fetch(`/api/views?slug=${encodeURIComponent(slug)}`, { method })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (!data || typeof data.views !== 'number') return;
+        if (!alreadyViewed) {
+          try {
+            sessionStorage.setItem(storageKey, '1');
+          } catch {}
+        }
+        const label = data.views === 1 ? singular : plural;
+        el.textContent = `${data.views.toLocaleString()} ${label}`;
+        wrap.hidden = false;
+      })
+      .catch(() => {});
+  })();
+</script>

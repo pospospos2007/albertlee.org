@@ -64,6 +64,8 @@ export const UI = {
       tagCountSingular: 'post tagged with',
       tagCountPlural: 'posts tagged with',
       emptyCategory: 'No posts in this category yet.',
+      viewSingular: 'view',
+      viewPlural: 'views',
     },
     projects: {
       title: 'Projects & Products',
@@ -138,6 +140,8 @@ export const UI = {
       tagCountSingular: '篇文章包含标签',
       tagCountPlural: '篇文章包含标签',
       emptyCategory: '该分类下暂时还没有文章。',
+      viewSingular: '次阅读',
+      viewPlural: '次阅读',
     },
     projects: {
       title: '项目与产品',
