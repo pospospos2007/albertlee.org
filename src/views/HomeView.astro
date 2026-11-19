@@ -1,0 +1,72 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostList from '../components/PostList.astro';
+import NewsletterBox from '../components/NewsletterBox.astro';
+import { PROJECTS, SOCIALS } from '../consts';
+import { localizedPath, UI, type Lang } from '../i18n';
+import { getPublishedPosts } from '../utils/posts';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = UI[lang].home;
+const posts = (await getPublishedPosts(lang)).slice(0, 5);
+---
+
+<BaseLayout lang={lang}>
+  <section class="hero">
+    <div class="hero-eyebrow">{t.eyebrow}</div>
+    <h1>{t.heading}</h1>
+    <p class="hero-bio">{t.bio}</p>
+    <div class="social-row">
+      {SOCIALS.github && (
+        <a href={SOCIALS.github} target="_blank" rel="noopener noreferrer">{t.github}</a>
+      )}
+      {SOCIALS.email && (
+        <a href={`mailto:${SOCIALS.email}`}>{t.email}</a>
+      )}
+      <a href={localizedPath(lang, '/rss.xml')}>{t.rssFeed}</a>
+      <a href={localizedPath(lang, '/about')}>{t.about}</a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <h2 class="section-title">{t.latestWriting}</h2>
+      <a href={localizedPath(lang, '/blog')} class="section-link">{t.allPosts}</a>
+    </div>
+    <PostList posts={posts} lang={lang} />
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <h2 class="section-title">{t.projectsTitle}</h2>
+      <a href={localizedPath(lang, '/projects')} class="section-link">{t.viewAll}</a>
+    </div>
+    <div class="card-grid">
+      {PROJECTS.slice(0, 3).map((project) => (
+        <a
+          href={project.url}
+          class="card"
+          target={project.url.startsWith('http') ? '_blank' : undefined}
+          rel={project.url.startsWith('http') ? 'noopener noreferrer' : undefined}
+        >
+          <div class="card-header">
+            <h3 class="card-title">{project.name}</h3>
+            <span class="badge">{project.status[lang]}</span>
+          </div>
+          <p class="card-desc">{project.description[lang]}</p>
+          <div class="tag-list">
+            {project.tags.map((tag) => (
+              <span class="tag">{tag}</span>
+            ))}
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <NewsletterBox lang={lang} />
+</BaseLayout>

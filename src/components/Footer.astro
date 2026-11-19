@@ -1,15 +1,24 @@
 ---
 import { SITE, SOCIALS } from '../consts';
+import { localizedPath, UI, type Lang } from '../i18n';
 
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'en' } = Astro.props;
+const t = UI[lang];
 const year = new Date().getFullYear();
+const rssHref = localizedPath(lang, '/rss.xml');
 ---
 
 <footer class="site-footer">
   <div class="container footer-inner">
-    <span>&copy; {year} {SITE.author}. Built with Astro &amp; Cloudflare Pages.</span>
+    <span>&copy; {year} {SITE.author}. {t.footer.builtWith}</span>
     <div class="footer-links">
-      <a href="/rss.xml">RSS</a>
+      <a href={rssHref}>RSS</a>
       <a href="/sitemap-index.xml">Sitemap</a>
+      {SOCIALS.email && <a href={`mailto:${SOCIALS.email}`}>Email</a>}
       {SOCIALS.github && (
         <a href={SOCIALS.github} target="_blank" rel="noopener noreferrer">GitHub</a>
       )}

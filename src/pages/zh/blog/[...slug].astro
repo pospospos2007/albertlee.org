@@ -1,0 +1,26 @@
+---
+import BlogPostView from '../../../views/BlogPostView.astro';
+import { getPostSlug, getPublishedPosts, type BlogPost } from '../../../utils/posts';
+
+export async function getStaticPaths() {
+  const posts = await getPublishedPosts('zh');
+  return posts.map((post, index) => ({
+    params: { slug: getPostSlug(post) },
+    props: {
+      post,
+      prevPost: posts[index + 1] ?? null,
+      nextPost: posts[index - 1] ?? null,
+    },
+  }));
+}
+
+interface Props {
+  post: BlogPost;
+  prevPost: BlogPost | null;
+  nextPost: BlogPost | null;
+}
+
+const { post, prevPost, nextPost } = Astro.props;
+---
+
+<BlogPostView lang="zh" post={post} prevPost={prevPost} nextPost={nextPost} />

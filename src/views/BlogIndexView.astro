@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostList from '../components/PostList.astro';
+import { localizedPath, UI, type Lang } from '../i18n';
+import { getAllTags, getPublishedPosts } from '../utils/posts';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = UI[lang].blog;
+const posts = await getPublishedPosts(lang);
+const tags = getAllTags(posts);
+---
+
+<BaseLayout lang={lang} title={t.title} description={t.description}>
+  <section class="section">
+    <h1>{t.title}</h1>
+    <p>
+      {t.introPrefix}<a href={localizedPath(lang, '/rss.xml')}>RSS</a>{t.introSuffix}
+    </p>
+
+    {tags.length > 0 && (
+      <div class="tag-list" style="margin-top: 1rem; margin-bottom: 1.75rem;">
+        {tags.map(({ tag, slug, count }) => (
+          <a href={localizedPath(lang, `/tags/${slug}/`)} class="tag">
+            #{tag} ({count})
+          </a>
+        ))}
+      </div>
+    )}
+
+    <PostList posts={posts} lang={lang} showTags={true} />
+  </section>
+</BaseLayout>

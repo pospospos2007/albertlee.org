@@ -1,11 +1,20 @@
 ---
 import { NEWSLETTER, SOCIALS } from '../consts';
+import { localizedPath, UI, type Lang } from '../i18n';
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'en' } = Astro.props;
+const t = UI[lang].newsletter;
+const rssHref = localizedPath(lang, '/rss.xml');
 ---
 
 {NEWSLETTER.enabled && (
-  <section class="newsletter-box" aria-label="Subscribe">
-    <h2>{NEWSLETTER.heading}</h2>
-    <p>{NEWSLETTER.description}</p>
+  <section class="newsletter-box" aria-label={t.heading}>
+    <h2>{t.heading}</h2>
+    <p>{t.description}</p>
 
     {NEWSLETTER.actionUrl ? (
       <form
@@ -17,17 +26,17 @@ import { NEWSLETTER, SOCIALS } from '../consts';
         <input
           type="email"
           name={NEWSLETTER.emailFieldName}
-          placeholder="you@example.com"
+          placeholder={t.placeholder}
           required
           aria-label="Email address"
         />
         <button type="submit" class="btn btn-primary">
-          {NEWSLETTER.buttonLabel}
+          {t.buttonLabel}
         </button>
       </form>
     ) : (
       <div class="social-row">
-        <a href="/rss.xml" class="btn btn-primary">Subscribe via RSS</a>
+        <a href={rssHref} class="btn btn-primary">{t.rssButton}</a>
         {SOCIALS.github && (
           <a
             href={SOCIALS.github}
@@ -35,7 +44,7 @@ import { NEWSLETTER, SOCIALS } from '../consts';
             rel="noopener noreferrer"
             class="btn btn-secondary"
           >
-            Follow on GitHub
+            {t.githubButton}
           </a>
         )}
       </div>

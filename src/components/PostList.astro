@@ -1,22 +1,24 @@
 ---
-import { formatDate, getReadingTime, type BlogPost } from '../utils/posts';
+import type { Lang } from '../i18n';
+import { formatDate, getPostUrl, getReadingTime, type BlogPost } from '../utils/posts';
 
 interface Props {
   posts: BlogPost[];
+  lang?: Lang;
   showTags?: boolean;
 }
 
-const { posts, showTags = false } = Astro.props;
+const { posts, lang = 'en', showTags = false } = Astro.props;
 ---
 
 <ul class="post-list">
   {posts.map((post) => (
     <li class="post-item">
-      <a href={`/blog/${post.id}/`}>
+      <a href={getPostUrl(post)}>
         <div class="post-item-top">
           <h3 class="post-item-title">{post.data.title}</h3>
           <span class="post-item-date">
-            {formatDate(post.data.pubDate)} &middot; {getReadingTime(post.body)}
+            {formatDate(post.data.pubDate, lang)} &middot; {getReadingTime(post.body, lang)}
           </span>
         </div>
         <p class="post-item-desc">{post.data.description}</p>

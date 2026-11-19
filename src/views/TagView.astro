@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostList from '../components/PostList.astro';
+import { localizedPath, UI, type Lang } from '../i18n';
+import type { BlogPost } from '../utils/posts';
+
+interface Props {
+  lang: Lang;
+  tagName: string;
+  posts: BlogPost[];
+}
+
+const { lang, tagName, posts } = Astro.props;
+const t = UI[lang].blog;
+const otherLang: Lang = lang === 'en' ? 'zh' : 'en';
+---
+
+<BaseLayout
+  lang={lang}
+  title={`#${tagName}`}
+  description={
+    lang === 'zh'
+      ? `albertlee.org 上标签为 #${tagName} 的文章。`
+      : `Articles tagged with #${tagName} on albertlee.org.`
+  }
+  alternateUrl={localizedPath(otherLang, '/blog')}
+>
+  <section class="section">
+    <p style="margin-bottom: 0.4rem;">
+      <a href={localizedPath(lang, '/blog')}>{t.allWriting}</a>
+    </p>
+    <h1>#{tagName}</h1>
+    <p>
+      {posts.length}{' '}
+      {posts.length === 1 ? t.tagCountSingular : t.tagCountPlural}{' '}
+      <code>#{tagName}</code>.
+    </p>
+    <PostList posts={posts} lang={lang} showTags={true} />
+  </section>
+</BaseLayout>

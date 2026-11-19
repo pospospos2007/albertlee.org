@@ -6,7 +6,25 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://albertlee.org',
   output: 'static',
-  integrations: [mdx(), sitemap()],
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'zh'],
+    routing: {
+      prefixDefaultLocale: false,
+    },
+  },
+  integrations: [
+    mdx(),
+    sitemap({
+      i18n: {
+        defaultLocale: 'en',
+        locales: {
+          en: 'en-US',
+          zh: 'zh-CN',
+        },
+      },
+    }),
+  ],
   markdown: {
     shikiConfig: {
       themes: {

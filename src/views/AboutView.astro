@@ -1,0 +1,82 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import NewsletterBox from '../components/NewsletterBox.astro';
+import { SITE, SOCIALS } from '../consts';
+import { localizedPath, UI, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = UI[lang].about;
+const rssHref = localizedPath(lang, '/rss.xml');
+---
+
+<BaseLayout lang={lang} title={t.title} description={t.description}>
+  {lang === 'zh' ? (
+    <section class="section prose">
+      <h1>关于</h1>
+      <p>
+        你好，我是 <strong>{SITE.author}</strong> —— 一名软件工程师，热衷于构建高速、稳定、可维护的软件，并把实战中解决过的问题公开沉淀下来。
+      </p>
+
+      <h2>这个站点记录什么</h2>
+      <p>
+        <code>albertlee.org</code> 是我在互联网上的自留地，主要分享长文技术笔记、真实排障复盘，以及我随手打造的小工具与独立产品。
+      </p>
+      <ul>
+        <li><strong>工程与排障笔记：</strong>真实遇到的系统坑、后端与系统架构实践、性能优化与效率工具。</li>
+        <li><strong>工具与独立项目：</strong>解决实际开发与日常痛点的小工具和产品。</li>
+        <li><strong>零运维理念：</strong>纯静态 HTML、Markdown 存在 Git、Cloudflare 全球边缘分发，把精力留给写代码和写文章。</li>
+      </ul>
+
+      <h2>联系我</h2>
+      <p>
+        欢迎在{' '}
+        <a href={SOCIALS.github} target="_blank" rel="noopener noreferrer">GitHub</a> 上关注我的项目，或通过{' '}
+        <a href={rssHref}>RSS</a> 订阅最新文章。
+        {SOCIALS.email && (
+          <>
+            {' '}如需技术交流、合作或赞助，欢迎发邮件至{' '}
+            <a href={`mailto:${SOCIALS.email}`}>{SOCIALS.email}</a>。
+          </>
+        )}
+      </p>
+    </section>
+  ) : (
+    <section class="section prose">
+      <h1>About</h1>
+      <p>
+        Hi, I&apos;m <strong>{SITE.author}</strong> — a software engineer who enjoys building
+        fast, maintainable software and learning in public.
+      </p>
+
+      <h2>What this site is for</h2>
+      <p>
+        <code>albertlee.org</code> is my corner of the internet for long-form technical notes,
+        real-world debugging guides, and small tools or products I ship along the way.
+      </p>
+      <ul>
+        <li><strong>Engineering &amp; debugging notes:</strong> real fixes, backend &amp; systems patterns, and performance deep dives.</li>
+        <li><strong>Tools &amp; side projects:</strong> utilities built to solve real developer and everyday pain points.</li>
+        <li><strong>Zero-ops philosophy:</strong> static HTML, Markdown in Git, global CDN, and minimal moving parts.</li>
+      </ul>
+
+      <h2>Connect</h2>
+      <p>
+        The best place to follow what I&apos;m building is on{' '}
+        <a href={SOCIALS.github} target="_blank" rel="noopener noreferrer">GitHub</a> or via the{' '}
+        <a href={rssHref}>RSS feed</a>.
+        {SOCIALS.email && (
+          <>
+            {' '}For consulting, collaboration, or sponsorships, reach out at{' '}
+            <a href={`mailto:${SOCIALS.email}`}>{SOCIALS.email}</a>.
+          </>
+        )}
+      </p>
+    </section>
+  )}
+
+  <NewsletterBox lang={lang} />
+</BaseLayout>

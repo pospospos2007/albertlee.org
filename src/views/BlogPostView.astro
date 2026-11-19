@@ -1,0 +1,111 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import NewsletterBox from '../components/NewsletterBox.astro';
+import { localizedPath, UI, type Lang } from '../i18n';
+import {
+  formatDate,
+  getPostSlug,
+  getPostUrl,
+  getReadingTime,
+  hasTranslation,
+  slugifyTag,
+  type BlogPost,
+} from '../utils/posts';
+
+interface Props {
+  lang: Lang;
+  post: BlogPost;
+  prevPost: BlogPost | null;
+  nextPost: BlogPost | null;
+}
+
+const { lang, post, prevPost, nextPost } = Astro.props;
+const t = UI[lang].blog;
+const { Content } = await render(post);
+const readingTime = getReadingTime(post.body, lang);
+const slug = getPostSlug(post);
+const otherLang: Lang = lang === 'en' ? 'zh' : 'en';
+const translated = await hasTranslation(lang, slug);
+const alternateUrl = translated
+  ? localizedPath(otherLang, `/blog/${slug}/`)
+  : localizedPath(otherLang, '/blog');
+---
+
+<BaseLayout
+  lang={lang}
+  title={post.data.title}
+  description={post.data.description}
+  alternateUrl={alternateUrl}
+  article={{
+    publishedTime: post.data.pubDate.toISOString(),
+    modifiedTime: post.data.updatedDate?.toISOString(),
+    tags: post.data.tags,
+  }}
+>
+  <article>
+    <header class="article-header">
+      <div class="article-meta">
+        <time datetime={post.data.pubDate.toISOString()}>
+          {formatDate(post.data.pubDate, lang)}
+        </time>
+        <span>&middot;</span>
+        <span>{readingTime}</span>
+        {post.data.updatedDate && (
+          <>
+            <span>&middot;</span>
+            <span>{t.updated} {formatDate(post.data.updatedDate, lang)}</span>
+          </>
+        )}
+        {translated && (
+          <>
+            <span>&middot;</span>
+            <a href={alternateUrl} hreflang={otherLang === 'zh' ? 'zh-CN' : 'en'}>
+              {t.alsoInOtherLang}
+            </a>
+          </>
+        )}
+      </div>
+
+      <h1>{post.data.title}</h1>
+      <p style="margin-bottom: 0; font-size: 1.05rem;">{post.data.description}</p>
+
+      {post.data.tags.length > 0 && (
+        <div class="tag-list" style="margin-top: 1rem;">
+          {post.data.tags.map((tag) => (
+            <a href={localizedPath(lang, `/tags/${slugifyTag(tag)}/`)} class="tag">
+              #{tag}
+            </a>
+          ))}
+        </div>
+      )}
+    </header>
+
+    <div class="prose">
+      <Content />
+    </div>
+
+    {(prevPost || nextPost) && (
+      <nav class="article-nav" aria-label="Post navigation">
+        {prevPost ? (
+          <a href={getPostUrl(prevPost)}>
+            <span>{t.older}</span>
+            <strong>{prevPost.data.title}</strong>
+          </a>
+        ) : (
+          <div />
+        )}
+        {nextPost && (
+          <a href={getPostUrl(nextPost)} style="text-align: right;">
+            <span>{t.newer}</span>
+            <strong>{nextPost.data.title}</strong>
+          </a>
+        )}
+      </nav>
+    )}
+  </article>
+
+  <div style="margin-top: 3rem;">
+    <NewsletterBox lang={lang} />
+  </div>
+</BaseLayout>

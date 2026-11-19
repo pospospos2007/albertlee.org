@@ -1,16 +1,15 @@
 ---
 title: "Why I Built albertlee.org on a Zero-Ops Static Stack"
 description: "Starting a personal engineering blog with Astro, GitHub, and Cloudflare Pages — $0/month hosting, zero server maintenance, and room to grow."
-pubDate: 2026-11-18
+pubDate: 2026-11-17
 tags: ["engineering", "astro", "cloudflare"]
-featured: true
 ---
 
 Every software engineer eventually hits the same realization: relying solely on third-party platforms means you don't own your audience, your URLs, or your distribution.
 
 So I registered **albertlee.org** and set up a personal home on the web with three strict rules:
 
-1. **Zero ops burden** — no VPS to patch, no database to back up, no Docker container crashing at 3 AM.
+1. **Zero ops burden** — no VPS to patch, no database to back up, no container crashing at 3 AM.
 2. **$0 infrastructure cost** — static files served globally from Cloudflare's edge network.
 3. **Room to grow** — start as a fast, readable technical blog, with a clean path to add developer tools, newsletters, or independent products later.
 
@@ -20,7 +19,7 @@ So I registered **albertlee.org** and set up a personal home on the web with thr
 | --- | --- | --- |
 | Framework | **Astro** | Ships pure HTML by default, first-class Markdown/MDX, instant builds |
 | Hosting & CDN | **Cloudflare Pages** | Automatic deploy on `git push`, free SSL, global edge caching |
-| DNS | **Cloudflare DNS** | Fast propagation and seamless Pages integration |
+| DNS & Email | **Cloudflare** | Fast DNS, automatic `www` redirect, and free Email Routing |
 | Content | **Markdown in Git** | Portable forever, version-controlled, zero vendor lock-in |
 
 ## Writing Is the Starting Point
@@ -29,7 +28,7 @@ I don't have the full roadmap figured out yet, and that's intentional. Publishin
 
 ```bash
 # The entire publishing workflow
-git add src/content/blog/my-next-post.md
+git add src/content/blog/
 git commit -m "post: add new engineering note"
 git push
 ```

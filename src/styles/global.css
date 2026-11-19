@@ -178,6 +178,34 @@ hr {
   color: var(--text);
 }
 
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 34px;
+  padding: 0 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  color: var(--text-muted) !important;
+  background: transparent;
+  transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+}
+
+.lang-switch:hover {
+  border-color: var(--border-strong);
+  color: var(--text) !important;
+  background: var(--bg-subtle);
+}
+
 .theme-toggle {
   background: transparent;
   border: 1px solid var(--border);

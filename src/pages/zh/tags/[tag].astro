@@ -1,0 +1,23 @@
+---
+import TagView from '../../../views/TagView.astro';
+import { getAllTags, getPublishedPosts, slugifyTag } from '../../../utils/posts';
+
+export async function getStaticPaths() {
+  const posts = await getPublishedPosts('zh');
+  const tags = getAllTags(posts);
+
+  return tags.map(({ tag, slug }) => ({
+    params: { tag: slug },
+    props: {
+      tagName: tag,
+      posts: posts.filter((post) =>
+        post.data.tags.some((t) => slugifyTag(t) === slug)
+      ),
+    },
+  }));
+}
+
+const { tagName, posts } = Astro.props;
+---
+
+<TagView lang="zh" tagName={tagName} posts={posts} />

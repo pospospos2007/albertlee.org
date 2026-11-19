@@ -1,66 +1,92 @@
 ---
-import { SITE } from '../consts';
+import { localizedPath, UI, type Lang } from '../i18n';
 
+interface Props {
+  lang: Lang;
+  alternateUrl: string;
+}
+
+const { lang, alternateUrl } = Astro.props;
+const t = UI[lang];
 const pathname = Astro.url.pathname;
+
+const homePath = localizedPath(lang, '/');
+const blogPath = localizedPath(lang, '/blog');
+const projectsPath = localizedPath(lang, '/projects');
+const aboutPath = localizedPath(lang, '/about');
+
 const isActive = (path: string) =>
-  path === '/' ? pathname === '/' : pathname.startsWith(path);
+  path === homePath ? pathname === homePath : pathname.startsWith(path);
 ---
 
 <header class="site-header">
   <div class="container nav-bar">
-    <a href="/" class="brand">
+    <a href={homePath} class="brand">
       <span class="brand-dot" aria-hidden="true"></span>
-      <span>{SITE.title}</span>
+      <span>{t.siteTitle}</span>
     </a>
 
     <nav class="nav-links" aria-label="Main navigation">
-      <a href="/blog" class={isActive('/blog') ? 'active' : ''}>Writing</a>
-      <a href="/projects" class={isActive('/projects') ? 'active' : ''}>Projects</a>
-      <a href="/about" class={isActive('/about') ? 'active' : ''}>About</a>
-      <button
-        id="theme-toggle"
-        class="theme-toggle"
-        type="button"
-        aria-label="Toggle color theme"
-        title="Toggle color theme"
-      >
-        <svg
-          class="icon-moon"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
+      <a href={blogPath} class={isActive(blogPath) ? 'active' : ''}>{t.nav.writing}</a>
+      <a href={projectsPath} class={isActive(projectsPath) ? 'active' : ''}>{t.nav.projects}</a>
+      <a href={aboutPath} class={isActive(aboutPath) ? 'active' : ''}>{t.nav.about}</a>
+
+      <div class="nav-actions">
+        <a
+          href={alternateUrl}
+          class="lang-switch"
+          aria-label={t.nav.switchAria}
+          title={t.nav.switchAria}
+          hreflang={lang === 'en' ? 'zh-CN' : 'en'}
         >
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-        </svg>
-        <svg
-          class="icon-sun"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
+          {t.nav.switchLabel}
+        </a>
+
+        <button
+          id="theme-toggle"
+          class="theme-toggle"
+          type="button"
+          aria-label={t.nav.themeAria}
+          title={t.nav.themeAria}
         >
-          <circle cx="12" cy="12" r="5"></circle>
-          <line x1="12" y1="1" x2="12" y2="3"></line>
-          <line x1="12" y1="21" x2="12" y2="23"></line>
-          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-          <line x1="1" y1="12" x2="3" y2="12"></line>
-          <line x1="21" y1="12" x2="23" y2="12"></line>
-          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-        </svg>
-      </button>
+          <svg
+            class="icon-moon"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          <svg
+            class="icon-sun"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+      </div>
     </nav>
   </div>
 </header>
