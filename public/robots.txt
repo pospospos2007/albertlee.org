@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://albertlee.org/sitemap-index.xml

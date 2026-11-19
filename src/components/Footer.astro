@@ -1,0 +1,24 @@
+---
+import { SITE, SOCIALS } from '../consts';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <span>&copy; {year} {SITE.author}. Built with Astro &amp; Cloudflare Pages.</span>
+    <div class="footer-links">
+      <a href="/rss.xml">RSS</a>
+      <a href="/sitemap-index.xml">Sitemap</a>
+      {SOCIALS.github && (
+        <a href={SOCIALS.github} target="_blank" rel="noopener noreferrer">GitHub</a>
+      )}
+      {SOCIALS.x && (
+        <a href={SOCIALS.x} target="_blank" rel="noopener noreferrer">X</a>
+      )}
+      {SOCIALS.linkedin && (
+        <a href={SOCIALS.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      )}
+    </div>
+  </div>
+</footer>

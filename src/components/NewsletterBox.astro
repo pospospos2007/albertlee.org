@@ -1,0 +1,44 @@
+---
+import { NEWSLETTER, SOCIALS } from '../consts';
+---
+
+{NEWSLETTER.enabled && (
+  <section class="newsletter-box" aria-label="Subscribe">
+    <h2>{NEWSLETTER.heading}</h2>
+    <p>{NEWSLETTER.description}</p>
+
+    {NEWSLETTER.actionUrl ? (
+      <form
+        class="newsletter-form"
+        action={NEWSLETTER.actionUrl}
+        method="post"
+        target="_blank"
+      >
+        <input
+          type="email"
+          name={NEWSLETTER.emailFieldName}
+          placeholder="you@example.com"
+          required
+          aria-label="Email address"
+        />
+        <button type="submit" class="btn btn-primary">
+          {NEWSLETTER.buttonLabel}
+        </button>
+      </form>
+    ) : (
+      <div class="social-row">
+        <a href="/rss.xml" class="btn btn-primary">Subscribe via RSS</a>
+        {SOCIALS.github && (
+          <a
+            href={SOCIALS.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-secondary"
+          >
+            Follow on GitHub
+          </a>
+        )}
+      </div>
+    )}
+  </section>
+)}

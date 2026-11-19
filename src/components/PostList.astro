@@ -1,0 +1,33 @@
+---
+import { formatDate, getReadingTime, type BlogPost } from '../utils/posts';
+
+interface Props {
+  posts: BlogPost[];
+  showTags?: boolean;
+}
+
+const { posts, showTags = false } = Astro.props;
+---
+
+<ul class="post-list">
+  {posts.map((post) => (
+    <li class="post-item">
+      <a href={`/blog/${post.id}/`}>
+        <div class="post-item-top">
+          <h3 class="post-item-title">{post.data.title}</h3>
+          <span class="post-item-date">
+            {formatDate(post.data.pubDate)} &middot; {getReadingTime(post.body)}
+          </span>
+        </div>
+        <p class="post-item-desc">{post.data.description}</p>
+        {showTags && post.data.tags.length > 0 && (
+          <div class="tag-list">
+            {post.data.tags.map((tag) => (
+              <span class="tag">#{tag}</span>
+            ))}
+          </div>
+        )}
+      </a>
+    </li>
+  ))}
+</ul>
