@@ -1,4 +1,22 @@
 export type Lang = 'en' | 'zh';
+export type Category = 'tech' | 'faith' | 'notes';
+
+export const CATEGORIES: Category[] = ['tech', 'faith', 'notes'];
+
+export const CATEGORY_LABELS: Record<Lang, Record<Category | 'all', string>> = {
+  en: {
+    all: 'All',
+    tech: 'Engineering',
+    faith: 'Faith',
+    notes: 'Life & Notes',
+  },
+  zh: {
+    all: '全部',
+    tech: '技术',
+    faith: '信仰',
+    notes: '随笔',
+  },
+};
 
 export const DEFAULT_LANG: Lang = 'en';
 
@@ -45,6 +63,7 @@ export const UI = {
       alsoInOtherLang: '阅读中文版 →',
       tagCountSingular: 'post tagged with',
       tagCountPlural: 'posts tagged with',
+      emptyCategory: 'No posts in this category yet.',
     },
     projects: {
       title: 'Projects & Products',
@@ -118,6 +137,7 @@ export const UI = {
       alsoInOtherLang: 'Read in English →',
       tagCountSingular: '篇文章包含标签',
       tagCountPlural: '篇文章包含标签',
+      emptyCategory: '该分类下暂时还没有文章。',
     },
     projects: {
       title: '项目与产品',

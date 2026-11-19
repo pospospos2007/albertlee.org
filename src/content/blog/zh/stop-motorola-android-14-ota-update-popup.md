@@ -2,6 +2,7 @@
 title: "免 Root 彻底停止摩托罗拉 Android 14 烦人的系统更新弹窗"
 description: "摩托罗拉 Android 14 对 com.motorola.ccc.ota 加了防禁用保护导致无法 disable-user？分享一套实测生效的 ADB 组合方案：静默休眠 1 年、禁止自动更新并限制后台唤醒与联网。"
 pubDate: 2026-11-18
+category: "tech"
 tags: ["android", "motorola", "adb", "debugging"]
 featured: true
 ---
@@ -97,3 +98,7 @@ adb shell "settings put global ota_disable_automatic_update 0; cmd appops reset 
 ```powershell
 adb shell cmd appops reset --user 10 com.motorola.ccc.ota
 ```
+
+---
+
+> **免责声明**：本文仅供学习与技术交流参考。通过 ADB 修改系统配置或延迟系统更新存在一定风险（包括可能延迟接收官方安全补丁），请在操作前备份重要数据，自行评估并承担操作风险。

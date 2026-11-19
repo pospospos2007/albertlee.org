@@ -2,7 +2,7 @@
 import { render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import NewsletterBox from '../components/NewsletterBox.astro';
-import { localizedPath, UI, type Lang } from '../i18n';
+import { CATEGORY_LABELS, localizedPath, UI, type Lang } from '../i18n';
 import {
   formatDate,
   getPostSlug,
@@ -46,6 +46,13 @@ const alternateUrl = translated
   <article>
     <header class="article-header">
       <div class="article-meta">
+        <a
+          href={`${localizedPath(lang, '/blog')}?category=${post.data.category}`}
+          class="category-pill"
+        >
+          {CATEGORY_LABELS[lang][post.data.category]}
+        </a>
+        <span>&middot;</span>
         <time datetime={post.data.pubDate.toISOString()}>
           {formatDate(post.data.pubDate, lang)}
         </time>

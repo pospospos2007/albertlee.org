@@ -1,5 +1,5 @@
 ---
-import type { Lang } from '../i18n';
+import { CATEGORY_LABELS, type Lang } from '../i18n';
 import { formatDate, getPostUrl, getReadingTime, type BlogPost } from '../utils/posts';
 
 interface Props {
@@ -9,11 +9,12 @@ interface Props {
 }
 
 const { posts, lang = 'en', showTags = false } = Astro.props;
+const labels = CATEGORY_LABELS[lang];
 ---
 
 <ul class="post-list">
   {posts.map((post) => (
-    <li class="post-item">
+    <li class="post-item" data-category={post.data.category}>
       <a href={getPostUrl(post)}>
         <div class="post-item-top">
           <h3 class="post-item-title">{post.data.title}</h3>
@@ -22,13 +23,13 @@ const { posts, lang = 'en', showTags = false } = Astro.props;
           </span>
         </div>
         <p class="post-item-desc">{post.data.description}</p>
-        {showTags && post.data.tags.length > 0 && (
-          <div class="tag-list">
-            {post.data.tags.map((tag) => (
+        <div class="tag-list">
+          <span class="category-pill">{labels[post.data.category]}</span>
+          {showTags &&
+            post.data.tags.map((tag) => (
               <span class="tag">#{tag}</span>
             ))}
-          </div>
-        )}
+        </div>
       </a>
     </li>
   ))}

@@ -43,6 +43,10 @@ const rssHref = localizedPath(lang, '/rss.xml');
           </>
         )}
       </p>
+      <h2>免责声明</h2>
+      <p>
+        本站所有文章仅代表个人观点与实践记录，不代表任何雇主或机构立场。涉及系统配置、命令行工具或第三方软件的技术教程仅供学习参考，操作前请自行评估并备份重要数据，相关风险由使用者自行承担。
+      </p>
     </section>
   ) : (
     <section class="section prose">
@@ -74,6 +78,13 @@ const rssHref = localizedPath(lang, '/rss.xml');
             <a href={`mailto:${SOCIALS.email}`}>{SOCIALS.email}</a>.
           </>
         )}
+      </p>
+      <h2>Disclaimer</h2>
+      <p>
+        All views expressed on this site are my own and do not represent those of any employer or
+        organization. Technical guides, commands, and code snippets are provided &ldquo;as is&rdquo;
+        for informational and educational purposes only &mdash; always back up your data and test
+        safely at your own risk.
       </p>
     </section>
   )}

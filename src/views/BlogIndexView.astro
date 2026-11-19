@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PostList from '../components/PostList.astro';
-import { localizedPath, UI, type Lang } from '../i18n';
+import { CATEGORIES, CATEGORY_LABELS, localizedPath, UI, type Lang } from '../i18n';
 import { getAllTags, getPublishedPosts } from '../utils/posts';
 
 interface Props {
@@ -10,8 +10,14 @@ interface Props {
 
 const { lang } = Astro.props;
 const t = UI[lang].blog;
+const catLabels = CATEGORY_LABELS[lang];
 const posts = await getPublishedPosts(lang);
 const tags = getAllTags(posts);
+
+const counts: Record<string, number> = { all: posts.length };
+for (const cat of CATEGORIES) {
+  counts[cat] = posts.filter((p) => p.data.category === cat).length;
+}
 ---
 
 <BaseLayout lang={lang} title={t.title} description={t.description}>
@@ -21,8 +27,23 @@ const tags = getAllTags(posts);
       {t.introPrefix}<a href={localizedPath(lang, '/rss.xml')}>RSS</a>{t.introSuffix}
     </p>
 
+    <div class="category-tabs" role="tablist" aria-label="Categories">
+      {(['all', ...CATEGORIES] as const).map((cat) => (
+        <button
+          type="button"
+          class={`category-tab${cat === 'all' ? ' active' : ''}`}
+          data-filter={cat}
+          role="tab"
+          aria-selected={cat === 'all' ? 'true' : 'false'}
+        >
+          <span>{catLabels[cat]}</span>
+          <span class="category-tab-count">{counts[cat]}</span>
+        </button>
+      ))}
+    </div>
+
     {tags.length > 0 && (
-      <div class="tag-list" style="margin-top: 1rem; margin-bottom: 1.75rem;">
+      <div class="tag-list" style="margin-bottom: 1.75rem;">
         {tags.map(({ tag, slug, count }) => (
           <a href={localizedPath(lang, `/tags/${slug}/`)} class="tag">
             #{tag} ({count})
@@ -32,5 +53,55 @@ const tags = getAllTags(posts);
     )}
 
     <PostList posts={posts} lang={lang} showTags={true} />
+
+    <div id="category-empty" class="empty-state" hidden>
+      {t.emptyCategory}
+    </div>
   </section>
 </BaseLayout>
+
+<script is:inline>
+  (() => {
+    const tabs = Array.from(document.querySelectorAll('.category-tab'));
+    const items = Array.from(document.querySelectorAll('.post-item[data-category]'));
+    const emptyEl = document.getElementById('category-empty');
+    if (!tabs.length) return;
+
+    function applyFilter(cat) {
+      let visibleCount = 0;
+      for (const tab of tabs) {
+        const isSelected = tab.getAttribute('data-filter') === cat;
+        tab.classList.toggle('active', isSelected);
+        tab.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+      }
+      for (const item of items) {
+        const matches = cat === 'all' || item.getAttribute('data-category') === cat;
+        item.style.display = matches ? '' : 'none';
+        if (matches) visibleCount += 1;
+      }
+      if (emptyEl) {
+        emptyEl.hidden = visibleCount > 0;
+      }
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const initial = params.get('category');
+    if (initial && tabs.some((t) => t.getAttribute('data-filter') === initial)) {
+      applyFilter(initial);
+    }
+
+    for (const tab of tabs) {
+      tab.addEventListener('click', () => {
+        const cat = tab.getAttribute('data-filter') || 'all';
+        applyFilter(cat);
+        const url = new URL(window.location.href);
+        if (cat === 'all') {
+          url.searchParams.delete('category');
+        } else {
+          url.searchParams.set('category', cat);
+        }
+        window.history.replaceState({}, '', url);
+      });
+    }
+  })();
+</script>

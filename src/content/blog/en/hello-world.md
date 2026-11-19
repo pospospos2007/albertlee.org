@@ -2,6 +2,7 @@
 title: "Why I Built albertlee.org on a Zero-Ops Static Stack"
 description: "Starting a personal engineering blog with Astro, GitHub, and Cloudflare Pages — $0/month hosting, zero server maintenance, and room to grow."
 pubDate: 2026-11-17
+category: "tech"
 tags: ["engineering", "astro", "cloudflare"]
 ---
 
@@ -14,6 +15,8 @@ So I registered **albertlee.org** and set up a personal home on the web with thr
 3. **Room to grow** — start as a fast, readable technical blog, with a clean path to add developer tools, newsletters, or independent products later.
 
 ## The Stack
+
+![Zero-ops static publishing pipeline: Markdown + Astro to GitHub to Cloudflare Pages](/images/static-blog-stack.svg)
 
 | Layer | Choice | Why |
 | --- | --- | --- |

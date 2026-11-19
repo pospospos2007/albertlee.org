@@ -2,6 +2,7 @@
 title: "为什么我用零运维纯静态方案搭建 albertlee.org"
 description: "用 Astro + GitHub + Cloudflare Pages 搭一个极简个人技术博客：每月 $0 服务器成本、彻底拒绝运维负担，同时为未来的产品与变现留好扩展空间。"
 pubDate: 2026-11-17
+category: "tech"
 tags: ["engineering", "astro", "cloudflare"]
 ---
 
@@ -14,6 +15,8 @@ tags: ["engineering", "astro", "cloudflare"]
 3. **保留成长空间**：先从极简、高速的技术博客起步，后续随时可以无缝扩展小工具、邮件订阅或独立产品。
 
 ## 技术栈选型
+
+![零运维纯静态发布流程：Markdown + Astro 推送至 GitHub 并由 Cloudflare Pages 自动部署](/images/static-blog-stack.svg)
 
 | 层级 | 方案 | 原因 |
 | --- | --- | --- |

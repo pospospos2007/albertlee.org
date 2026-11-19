@@ -2,6 +2,7 @@
 title: "How to Permanently Stop Motorola Android 14 System Update Popups (No Root)"
 description: "Fix Motorola Android 14's non-disableable com.motorola.ccc.ota update banner without root using ADB notification snoozing, AppOps restrictions, and background network blocking."
 pubDate: 2026-11-18
+category: "tech"
 tags: ["android", "motorola", "adb", "debugging"]
 featured: true
 ---
@@ -99,3 +100,7 @@ If you also restricted a secondary user space (`User 10`), reset its AppOps as w
 ```powershell
 adb shell cmd appops reset --user 10 com.motorola.ccc.ota
 ```
+
+---
+
+> **Disclaimer:** This guide is provided for educational and informational purposes only. Modifying system settings or suppressing OTA updates via ADB is done at your own risk and may delay security patches or affect device behavior. Always back up important data before making system-level changes.
